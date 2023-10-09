@@ -7,9 +7,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
-
-
 public class TipOfMyTounge implements ActionListener{
+    //TODO: Add a win streak label? maybe?
+    //TODO: Add a Title Label to the mainMenu Panel?
+    //TODO: Add an instructions panel
+    //TODO: add an instructions button to mainMenu panel
+    //TODO: Find a better 6 letter word list
+    //TODO: add an error Label to the gamePanel (to let user know if they typed in word that was too long or doesnt exist)
+    //TODO: maybe add game logo as an icon?????
+    //TODO: figure out how to make the textfeild submit by hitting the enter key???
+    
     JFrame frame;
     JPanel panel;
     CardLayout cardLayout;
@@ -28,7 +35,7 @@ public class TipOfMyTounge implements ActionListener{
     JButton hardButton;
 
     ArrayList<String> wordList = getWordList(1);
-    String targetWord = "";
+    String targetWord;
     int count = 0;
 
 
@@ -56,7 +63,6 @@ public class TipOfMyTounge implements ActionListener{
                 x += 55;
             }
             x = 50;
-            //if(row < 6)
                 y += 55;
         }
         
@@ -181,7 +187,8 @@ public class TipOfMyTounge implements ActionListener{
 
         if(e.getSource() == enterButton){
             String userWord = textField.getText();
-
+            //TODO: check for real words
+            //TODO: color boxes according to whether the word is in the right place or exists
 
             if(userWord.equalsIgnoreCase(targetWord)){
                 textField.setEditable(false);
@@ -209,6 +216,7 @@ public class TipOfMyTounge implements ActionListener{
             
         }
 
+        //TODO: Reorganize textArray to fit center on frame
         if(e.getSource() == easyButton){
             wordList = getWordList(0);
             difficultyLabel.setText("Difficulty: Easy");
@@ -219,6 +227,8 @@ public class TipOfMyTounge implements ActionListener{
                 }
             }
         }
+
+        //TODO: Reorganize textArray to fit center on frame
         if(e.getSource() == mediumButton){
             wordList = getWordList(1);
             difficultyLabel.setText("Difficulty: Medium");
@@ -231,6 +241,8 @@ public class TipOfMyTounge implements ActionListener{
                 }
             }
         }
+
+        //TODO: Reorganize textArray to fit center on frame
         if(e.getSource() == hardButton){
             wordList = getWordList(2);
             difficultyLabel.setText("Difficulty: Hard");
@@ -259,7 +271,7 @@ public class TipOfMyTounge implements ActionListener{
                 file = new File("sevenLetterWords.txt");
                 break;
             default:
-                file = new File("");
+                return WordList;
         }
 
         try{
