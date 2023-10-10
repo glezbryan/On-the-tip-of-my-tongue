@@ -8,11 +8,10 @@ import java.awt.*;
 import java.util.*;
 
 public class TipOfMyTounge implements ActionListener{
-    //TODO: Add a win streak label? maybe?
+    //TODO: Have a better way to display streaks?? maybe?
     //TODO: Add an instructions panel
     //TODO: add an instructions button to mainMenu panel
     //TODO: Find a better 6 letter word list
-    //TODO: add an error Label to the gamePanel (to let user know if they typed in word that was too long or doesnt exist)
     //TODO: Hints? How? Is there a cost?
     //TODO: possible time factor
     
@@ -35,6 +34,9 @@ public class TipOfMyTounge implements ActionListener{
     JButton mediumButton;
     JButton hardButton;
 
+    JLabel mmStreakLabel; //main menu streak label
+    JLabel gpStreakLabel; //game panel streak label
+
     ArrayList<String> wordList = getWordList(1);
     int[] flags;
     String targetWord;
@@ -51,6 +53,18 @@ public class TipOfMyTounge implements ActionListener{
         cardLayout = new CardLayout();
         panel = new JPanel();
         panel.setLayout(cardLayout);
+
+        mmStreakLabel = new JLabel();
+        mmStreakLabel.setText("Current Streaks | Easy: " + easyStreak + " | Medium: " + mediumStreak + " | Hard: " + hardStreak);
+        mmStreakLabel.setForeground(Color.white);
+        mmStreakLabel.setSize(500, 20);
+        mmStreakLabel.setLocation(0, 450);
+
+        gpStreakLabel = new JLabel();
+        gpStreakLabel.setText("Current Streaks | Easy: " + easyStreak + " | Medium: " + mediumStreak + " | Hard: " + hardStreak);
+        gpStreakLabel.setForeground(Color.white);
+        gpStreakLabel.setSize(500, 20);
+        gpStreakLabel.setLocation(0, 450);
 
         int x = 85, y = 35;
         for(int row = 0; row < 7; row++){
@@ -116,6 +130,7 @@ public class TipOfMyTounge implements ActionListener{
         gamePanel.add(enterButton);
         gamePanel.add(quitButton);
         gamePanel.add(playAgainButton);
+        gamePanel.add(gpStreakLabel);
         panel.add(gamePanel,"1");
         
         x = 50;
@@ -182,6 +197,7 @@ public class TipOfMyTounge implements ActionListener{
         mainMenu.add(mediumButton);
         mainMenu.add(hardButton);
         mainMenu.add(titleLabel);
+        mainMenu.add(mmStreakLabel);
         panel.add(mainMenu,"2");
         
 
@@ -255,11 +271,11 @@ public class TipOfMyTounge implements ActionListener{
                         hardStreak++;
                         break;
                 }
+                mmStreakLabel.setText("Current Streaks | Easy: " + easyStreak + " | Medium: " + mediumStreak + " | Hard: " + hardStreak);
+                gpStreakLabel.setText("Current Streaks | Easy: " + easyStreak + " | Medium: " + mediumStreak + " | Hard: " + hardStreak);
                 turn = maxTurns;//set game over
                 return;
             }
-
-            
 
             //Assures that only words of the correct length pass
             if(userWord.length() != targetWord.length()){
@@ -323,6 +339,9 @@ public class TipOfMyTounge implements ActionListener{
                         hardStreak = 0;
                         break;
                 }
+                mmStreakLabel.setText("Current Streaks | Easy: " + easyStreak + " | Medium: " + mediumStreak + " | Hard: " + hardStreak);
+                gpStreakLabel.setText("Current Streaks | Easy: " + easyStreak + " | Medium: " + mediumStreak + " | Hard: " + hardStreak);
+
             }
             
         }
