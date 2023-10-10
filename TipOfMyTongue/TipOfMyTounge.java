@@ -9,14 +9,12 @@ import java.util.*;
 
 public class TipOfMyTounge implements ActionListener{
     //TODO: Add a win streak label? maybe?
-    //TODO: Add a Title Label to the mainMenu Panel?
     //TODO: Add an instructions panel
     //TODO: add an instructions button to mainMenu panel
     //TODO: Find a better 6 letter word list
     //TODO: add an error Label to the gamePanel (to let user know if they typed in word that was too long or doesnt exist)
-    //TODO: maybe add game logo as an icon?????
     //TODO: Hints? How? Is there a cost?
-    //TODO: newWord button appears after a win or lose to quickly play again
+    //TODO: possible time factor
     
     JFrame frame;
     JPanel panel;
@@ -27,7 +25,9 @@ public class TipOfMyTounge implements ActionListener{
     JTextField[][] text = new JTextField[7][7]; 
     JButton enterButton;
     JButton quitButton;
+    JButton playAgainButton;
 
+    JLabel titleLabel;
     JPanel mainMenu;
     JButton newWordButton;
     JLabel difficultyLabel;
@@ -39,6 +39,10 @@ public class TipOfMyTounge implements ActionListener{
     int[] flags;
     String targetWord;
     int turn = 0;
+    int easyStreak = 0;
+    int mediumStreak = 0;
+    int hardStreak = 0;
+
 
 
     TipOfMyTounge() {
@@ -48,7 +52,7 @@ public class TipOfMyTounge implements ActionListener{
         panel = new JPanel();
         panel.setLayout(cardLayout);
 
-        int x = 50, y = 10;
+        int x = 85, y = 35;
         for(int row = 0; row < 7; row++){
             for(int column = 0; column < 7; column++){
                 
@@ -64,16 +68,18 @@ public class TipOfMyTounge implements ActionListener{
                     text[row][column].setVisible(false);
                 x += 55;
             }
-            x = 50;
-                y += 55;
+            x = 85;
+            y += 55;
         }
         
-        
+        x = 50;
+        y = 395;
 
         textField = new JTextField();
         textField.setSize(230, 50);
         textField.setLocation(x, y);
         textField.addActionListener(this);
+        textField.setFont(new Font(null, 0,15));
         x += 235;
 
         enterButton = new JButton();
@@ -82,6 +88,14 @@ public class TipOfMyTounge implements ActionListener{
         enterButton.setSize(70, 50);
         enterButton.setLocation(x, y);
         enterButton.addActionListener(this);
+
+        playAgainButton = new JButton();
+        playAgainButton.setText("New");
+        playAgainButton.setFocusable(false);
+        playAgainButton.setSize(70, 50);
+        playAgainButton.setLocation(x, y);
+        playAgainButton.setVisible(false);
+        playAgainButton.addActionListener(this);
         x += 75;
 
         quitButton = new JButton();
@@ -101,10 +115,22 @@ public class TipOfMyTounge implements ActionListener{
         gamePanel.add(textField);
         gamePanel.add(enterButton);
         gamePanel.add(quitButton);
+        gamePanel.add(playAgainButton);
         panel.add(gamePanel,"1");
         
-        x = 150;
+        x = 50;
         y = 50;
+
+        titleLabel = new JLabel();
+        titleLabel.setText("On The Tip of my Tounge");
+        titleLabel.setForeground(Color.white);
+        titleLabel.setFont(new Font("Harlow Solid Italic", 0, 30));
+        titleLabel.setHorizontalAlignment(JLabel.CENTER);
+        titleLabel.setSize(400, 50);
+        titleLabel.setLocation(x, y);
+
+        y += 55;
+        x = 150;
 
         newWordButton = new JButton();
         newWordButton.setText("New Word?");
@@ -117,7 +143,8 @@ public class TipOfMyTounge implements ActionListener{
         difficultyLabel = new JLabel();
         difficultyLabel.setText("Difficulty: Medium");
         difficultyLabel.setForeground(Color.white);
-        difficultyLabel.setFont(new Font(null, 0, 20));
+        difficultyLabel.setFont(new Font("Harlow Solid Italic", 0, 23));
+        difficultyLabel.setHorizontalAlignment(JLabel.CENTER);
         difficultyLabel.setSize(200, 50);
         difficultyLabel.setLocation(x, y);
         y += 55;
@@ -154,11 +181,14 @@ public class TipOfMyTounge implements ActionListener{
         mainMenu.add(easyButton);
         mainMenu.add(mediumButton);
         mainMenu.add(hardButton);
+        mainMenu.add(titleLabel);
         panel.add(mainMenu,"2");
         
 
+        ImageIcon icon = new ImageIcon("IMG_0701.PNG");
+        frame.setIconImage(icon.getImage());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("Tip Of My Tounge");
+        frame.setTitle("On The Tip Of My Tounge");
         cardLayout.show(panel, "2");
         frame.add(panel);
         frame.setSize(500,500);
@@ -174,14 +204,16 @@ public class TipOfMyTounge implements ActionListener{
             cardLayout.show(panel,"1");
             int randomIndex = (int)(Math.random()*wordList.size());
             targetWord = wordList.get(randomIndex);
-            System.out.println("[DEBUG]target word: " + targetWord);
+            //System.out.println("[DEBUG]target word: " + targetWord);
         }
         
         if(e.getSource() == quitButton){
+            turn = 0;
             cardLayout.show(panel,"2");
             textField.setText(null);
             textField.setEditable(true);
-            turn = 0;
+            enterButton.setVisible(true);
+            playAgainButton.setVisible(false);
             for(int row = 0; row < 7; row++){
                 for(int column = 0; column < 7; column++){
                     text[row][column].setText(null);
@@ -191,13 +223,16 @@ public class TipOfMyTounge implements ActionListener{
         }
 
         if(e.getSource() == enterButton || e.getSource() == textField){
-            //TODO: check for real words
             String userWord = textField.getText();
             int maxTurns = targetWord.length();
 
             //Assures no case inequalities
             targetWord = targetWord.toUpperCase();
             userWord = userWord.toUpperCase();
+
+            //game is over, enterButton wont do anything
+            if(turn == maxTurns)
+                return;
 
             //Win case
             if(userWord.equals(targetWord)){
@@ -207,24 +242,52 @@ public class TipOfMyTounge implements ActionListener{
                 }
                 textField.setEditable(false);
                 textField.setText("You win!");
-                turn = maxTurns;
-                return;
-            }
-
-            if(turn == maxTurns)
-                return;
-
-            //Assures that only words of the correct length pass
-            if(userWord.length() != targetWord.length()){
-                textField.setText(null);
+                enterButton.setVisible(false);
+                playAgainButton.setVisible(true);
+                switch(maxTurns){
+                    case 5:
+                        easyStreak++;
+                        break;
+                    case 6:
+                        mediumStreak++;
+                        break;
+                    case 7:
+                        hardStreak++;
+                        break;
+                }
+                turn = maxTurns;//set game over
                 return;
             }
 
             
+
+            //Assures that only words of the correct length pass
+            if(userWord.length() != targetWord.length()){
+                textField.setText("Please enter a " + targetWord.length() + " letter word");
+                textField.selectAll();
+                return;
+            }
+
+            //check for real words
+            boolean isRealWord = false;
+            for(String s: wordList){
+                if(s.equalsIgnoreCase(userWord)){
+                    isRealWord = true;
+                    break;
+                }
+            }
+            if(isRealWord == false){
+                textField.setText(userWord.toLowerCase() + " is not on the word list");
+                textField.selectAll();
+                return;
+            }
+
             flags = getFlags(userWord, targetWord);
+
+            //prints userword to text array
             for(int i = 0; i < userWord.length(); i++){
-                //prints userword to text array
                 text[turn][i].setText("" + userWord.toUpperCase().charAt(i));
+
                 //colors text array according to flag array. 
                 //1 = correct letter at index = green
                 //2 = letter exist in target word = yellow
@@ -247,24 +310,58 @@ public class TipOfMyTounge implements ActionListener{
             if(turn == maxTurns){
                 textField.setEditable(false);
                 textField.setText("The word was: " + targetWord.toLowerCase());
+                enterButton.setVisible(false);
+                playAgainButton.setVisible(true);
+                switch(maxTurns){
+                    case 5:
+                        easyStreak = 0;
+                        break;
+                    case 6:
+                        mediumStreak = 0;
+                        break;
+                    case 7:
+                        hardStreak = 0;
+                        break;
+                }
             }
             
         }
+        if(e.getSource() == playAgainButton){
+            turn = 0;
+            textField.setText(null);
+            textField.setEditable(true);
+            enterButton.setVisible(true);
+            playAgainButton.setVisible(false);
+            for(int row = 0; row < 7; row++){
+                for(int column = 0; column < 7; column++){
+                    text[row][column].setText(null);
+                    text[row][column].setBackground(Color.LIGHT_GRAY);
+                }
+            }
 
-        //TODO: Reorganize textArray to fit center on frame
+            int randomIndex = (int)(Math.random()*wordList.size());
+            targetWord = wordList.get(randomIndex);
+            //System.out.println("[DEBUG]target word: " + targetWord);
+        }
+
         if(e.getSource() == easyButton){
+            int x = 112, y = 60;
             wordList = getWordList(0);
             difficultyLabel.setText("Difficulty: Easy");
             for(int row = 0; row < 7; row++){
                 for(int column = 0; column < 7; column++){
                     if(row > 4 || column > 4)
                         text[row][column].setVisible(false);
+                    text[row][column].setLocation(x, y);
+                    x += 55;
                 }
+                x = 112;
+                y += 55;
             }
         }
 
-        //TODO: Reorganize textArray to fit center on frame
         if(e.getSource() == mediumButton){
+            int x = 85, y = 35;
             wordList = getWordList(1);
             difficultyLabel.setText("Difficulty: Medium");
             for(int row = 0; row < 7; row++){
@@ -273,18 +370,26 @@ public class TipOfMyTounge implements ActionListener{
                         text[row][column].setVisible(true);
                     if(row == 6 || column == 6)
                         text[row][column].setVisible(false);
+                    text[row][column].setLocation(x, y);
+                    x += 55;
                 }
+                x = 85;
+                y += 55;
             }
         }
 
-        //TODO: Reorganize textArray to fit center on frame
         if(e.getSource() == hardButton){
+            int x = 50, y = 10;
             wordList = getWordList(2);
             difficultyLabel.setText("Difficulty: Hard");
             for(int row = 0; row < 7; row++){
                 for(int column = 0; column < 7; column++){
                     text[row][column].setVisible(true);
+                    text[row][column].setLocation(x, y);
+                    x += 55;
                 }
+                x = 50;
+                y += 55;
             }
         }
         
