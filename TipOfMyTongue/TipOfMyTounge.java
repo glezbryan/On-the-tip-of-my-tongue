@@ -16,6 +16,7 @@ public class TipOfMyTounge implements ActionListener{
     //TODO: add an error Label to the gamePanel (to let user know if they typed in word that was too long or doesnt exist)
     //TODO: maybe add game logo as an icon?????
     //TODO: Hints? How? Is there a cost?
+    //TODO: newWord button appears after a win or lose to quickly play again
     
     JFrame frame;
     JPanel panel;
@@ -161,6 +162,7 @@ public class TipOfMyTounge implements ActionListener{
         cardLayout.show(panel, "2");
         frame.add(panel);
         frame.setSize(500,500);
+        frame.setResizable(false);
         frame.setVisible(true);
     }
     public static void main(String[] args){
@@ -172,7 +174,7 @@ public class TipOfMyTounge implements ActionListener{
             cardLayout.show(panel,"1");
             int randomIndex = (int)(Math.random()*wordList.size());
             targetWord = wordList.get(randomIndex);
-            //System.out.println("[DEBUG]target word: " + targetWord);
+            System.out.println("[DEBUG]target word: " + targetWord);
         }
         
         if(e.getSource() == quitButton){
@@ -189,10 +191,14 @@ public class TipOfMyTounge implements ActionListener{
         }
 
         if(e.getSource() == enterButton || e.getSource() == textField){
-            String userWord = textField.getText();
             //TODO: check for real words
+            String userWord = textField.getText();
+            //Assures no case inequalities
+            targetWord = targetWord.toUpperCase();
+            userWord = userWord.toUpperCase();
 
-            if(userWord.equalsIgnoreCase(targetWord)){
+            //Win case
+            if(userWord.equals(targetWord)){
                 textField.setEditable(false);
                 for(int i = 0; i < userWord.length(); i++){
                     text[count][i].setText("" + userWord.toUpperCase().charAt(i));
@@ -203,10 +209,16 @@ public class TipOfMyTounge implements ActionListener{
                 return;
             }
 
+            //Assures that only words of the correct length pass
             if(userWord.length() == targetWord.length()){
                 flags = getFlags(userWord, targetWord);
                 for(int i = 0; i < userWord.length(); i++){
+                    //prints userword to text array
                     text[count][i].setText("" + userWord.toUpperCase().charAt(i));
+                    //colors text array according to flag array. 
+                    //1 = correct letter at index = green
+                    //2 = letter exist in target word = yellow
+                    //3 = letter does not exist = either leave is as is or maybe red?
                     switch(flags[i]){
                         case 1:
                             text[count][i].setBackground(Color.green);
@@ -214,17 +226,21 @@ public class TipOfMyTounge implements ActionListener{
                         case 2:
                             text[count][i].setBackground(Color.yellow);
                             break;
+                        //case 3:
+                        //    text[count][i].setBackground(Color.red);
+                        //    break;
                     }
                 }
+                textField.setText(null);
                 count++;
             }
+            else if(count <= targetWord.length())
+                textField.setText(null);
             
             if(count == targetWord.length()){
                 textField.setEditable(false);
-                textField.setText("The word was: " + targetWord);
+                textField.setText("The word was: " + targetWord.toLowerCase());
             }
-            else if(count < targetWord.length())
-                textField.setText(null);
             
         }
 
