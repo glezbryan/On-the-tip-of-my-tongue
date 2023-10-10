@@ -15,7 +15,7 @@ public class TipOfMyTounge implements ActionListener{
     //TODO: Find a better 6 letter word list
     //TODO: add an error Label to the gamePanel (to let user know if they typed in word that was too long or doesnt exist)
     //TODO: maybe add game logo as an icon?????
-    //TODO: Hints?
+    //TODO: Hints? How? Is there a cost?
     
     JFrame frame;
     JPanel panel;
