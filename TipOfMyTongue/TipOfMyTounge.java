@@ -38,7 +38,7 @@ public class TipOfMyTounge implements ActionListener{
     ArrayList<String> wordList = getWordList(1);
     int[] flags;
     String targetWord;
-    int count = 0;
+    int turn = 0;
 
 
     TipOfMyTounge() {
@@ -181,7 +181,7 @@ public class TipOfMyTounge implements ActionListener{
             cardLayout.show(panel,"2");
             textField.setText(null);
             textField.setEditable(true);
-            count = 0;
+            turn = 0;
             for(int row = 0; row < 7; row++){
                 for(int column = 0; column < 7; column++){
                     text[row][column].setText(null);
@@ -193,51 +193,58 @@ public class TipOfMyTounge implements ActionListener{
         if(e.getSource() == enterButton || e.getSource() == textField){
             //TODO: check for real words
             String userWord = textField.getText();
+            int maxTurns = targetWord.length();
+
             //Assures no case inequalities
             targetWord = targetWord.toUpperCase();
             userWord = userWord.toUpperCase();
 
             //Win case
             if(userWord.equals(targetWord)){
-                textField.setEditable(false);
                 for(int i = 0; i < userWord.length(); i++){
-                    text[count][i].setText("" + userWord.toUpperCase().charAt(i));
-                    text[count][i].setBackground(Color.green);
+                    text[turn][i].setText("" + userWord.toUpperCase().charAt(i));
+                    text[turn][i].setBackground(Color.green);
                 }
+                textField.setEditable(false);
                 textField.setText("You win!");
-                count = 10;
+                turn = maxTurns;
                 return;
             }
 
+            if(turn == maxTurns)
+                return;
+
             //Assures that only words of the correct length pass
-            if(userWord.length() == targetWord.length()){
-                flags = getFlags(userWord, targetWord);
-                for(int i = 0; i < userWord.length(); i++){
-                    //prints userword to text array
-                    text[count][i].setText("" + userWord.toUpperCase().charAt(i));
-                    //colors text array according to flag array. 
-                    //1 = correct letter at index = green
-                    //2 = letter exist in target word = yellow
-                    //3 = letter does not exist = either leave is as is or maybe red?
-                    switch(flags[i]){
-                        case 1:
-                            text[count][i].setBackground(Color.green);
-                            break;
-                        case 2:
-                            text[count][i].setBackground(Color.yellow);
-                            break;
-                        //case 3:
-                        //    text[count][i].setBackground(Color.red);
-                        //    break;
-                    }
-                }
+            if(userWord.length() != targetWord.length()){
                 textField.setText(null);
-                count++;
+                return;
             }
-            else if(count <= targetWord.length())
-                textField.setText(null);
+
             
-            if(count == targetWord.length()){
+            flags = getFlags(userWord, targetWord);
+            for(int i = 0; i < userWord.length(); i++){
+                //prints userword to text array
+                text[turn][i].setText("" + userWord.toUpperCase().charAt(i));
+                //colors text array according to flag array. 
+                //1 = correct letter at index = green
+                //2 = letter exist in target word = yellow
+                //3 = letter does not exist = either leave is as is or maybe red?
+                switch(flags[i]){
+                    case 1:
+                        text[turn][i].setBackground(Color.green);
+                        break;
+                    case 2:
+                        text[turn][i].setBackground(Color.yellow);
+                        break;
+                    //case 3:
+                    //    text[turn][i].setBackground(Color.red);
+                    //    break;
+                }
+            }
+            textField.setText(null);
+            turn++;
+            
+            if(turn == maxTurns){
                 textField.setEditable(false);
                 textField.setText("The word was: " + targetWord.toLowerCase());
             }
