@@ -54,18 +54,7 @@ public class TipOfMyTounge implements ActionListener{
         panel = new JPanel();
         panel.setLayout(cardLayout);
 
-        mmStreakLabel = new JLabel();
-        mmStreakLabel.setText("Current Streaks | Easy: " + easyStreak + " | Medium: " + mediumStreak + " | Hard: " + hardStreak);
-        mmStreakLabel.setForeground(Color.white);
-        mmStreakLabel.setSize(500, 20);
-        mmStreakLabel.setLocation(0, 450);
-
-        gpStreakLabel = new JLabel();
-        gpStreakLabel.setText("Current Streaks | Easy: " + easyStreak + " | Medium: " + mediumStreak + " | Hard: " + hardStreak);
-        gpStreakLabel.setForeground(Color.white);
-        gpStreakLabel.setSize(500, 20);
-        gpStreakLabel.setLocation(0, 450);
-
+        //Game Panel Components
         int x = 85, y = 35;
         for(int row = 0; row < 7; row++){
             for(int column = 0; column < 7; column++){
@@ -119,6 +108,11 @@ public class TipOfMyTounge implements ActionListener{
         quitButton.setLocation(x, y);
         quitButton.addActionListener(this);
 
+        gpStreakLabel = new JLabel();
+        gpStreakLabel.setText("Current Streaks | Easy: " + easyStreak + " | Medium: " + mediumStreak + " | Hard: " + hardStreak);
+        gpStreakLabel.setForeground(Color.white);
+        gpStreakLabel.setSize(500, 20);
+        gpStreakLabel.setLocation(0, 450);
 
         gamePanel = new JPanel();
         gamePanel.setLayout(null);
@@ -133,9 +127,10 @@ public class TipOfMyTounge implements ActionListener{
         gamePanel.add(gpStreakLabel);
         panel.add(gamePanel,"1");
         
+
+        //Main Menu Components
         x = 50;
         y = 50;
-
         titleLabel = new JLabel();
         titleLabel.setText("On The Tip of my Tounge");
         titleLabel.setForeground(Color.white);
@@ -188,6 +183,12 @@ public class TipOfMyTounge implements ActionListener{
         hardButton.addActionListener(this);
         y += 55;
 
+        mmStreakLabel = new JLabel();
+        mmStreakLabel.setText("Current Streaks | Easy: " + easyStreak + " | Medium: " + mediumStreak + " | Hard: " + hardStreak);
+        mmStreakLabel.setForeground(Color.white);
+        mmStreakLabel.setSize(500, 20);
+        mmStreakLabel.setLocation(0, 450);
+
         mainMenu = new JPanel();
         mainMenu.setLayout(null);
         mainMenu.setBackground(Color.DARK_GRAY);
@@ -201,6 +202,7 @@ public class TipOfMyTounge implements ActionListener{
         panel.add(mainMenu,"2");
         
 
+        //Frame Specs
         ImageIcon icon = new ImageIcon("IMG_0701.PNG");
         frame.setIconImage(icon.getImage());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -217,7 +219,7 @@ public class TipOfMyTounge implements ActionListener{
 
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == newWordButton){
-            cardLayout.show(panel,"1");
+            cardLayout.show(panel,"1"); //switch to game panel
             int randomIndex = (int)(Math.random()*wordList.size());
             targetWord = wordList.get(randomIndex);
             //System.out.println("[DEBUG]target word: " + targetWord);
@@ -225,7 +227,7 @@ public class TipOfMyTounge implements ActionListener{
         
         if(e.getSource() == quitButton){
             turn = 0;
-            cardLayout.show(panel,"2");
+            cardLayout.show(panel,"2"); //switch to main menu panel
             textField.setText(null);
             textField.setEditable(true);
             enterButton.setVisible(true);
@@ -298,9 +300,8 @@ public class TipOfMyTounge implements ActionListener{
                 return;
             }
 
+            //printing userword to text array with appropiate coloring
             flags = getFlags(userWord, targetWord);
-
-            //prints userword to text array
             for(int i = 0; i < userWord.length(); i++){
                 text[turn][i].setText("" + userWord.toUpperCase().charAt(i));
 
@@ -323,6 +324,7 @@ public class TipOfMyTounge implements ActionListener{
             textField.setText(null);
             turn++;
             
+            //Out of guesses. Game over
             if(turn == maxTurns){
                 textField.setEditable(false);
                 textField.setText("The word was: " + targetWord.toLowerCase());
@@ -345,6 +347,7 @@ public class TipOfMyTounge implements ActionListener{
             }
             
         }
+        
         if(e.getSource() == playAgainButton){
             turn = 0;
             textField.setText(null);
