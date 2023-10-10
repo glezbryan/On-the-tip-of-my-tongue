@@ -15,7 +15,7 @@ public class TipOfMyTounge implements ActionListener{
     //TODO: Find a better 6 letter word list
     //TODO: add an error Label to the gamePanel (to let user know if they typed in word that was too long or doesnt exist)
     //TODO: maybe add game logo as an icon?????
-    //TODO: figure out how to make the textfeild submit by hitting the enter key???
+    //TODO: Hints?
     
     JFrame frame;
     JPanel panel;
@@ -35,6 +35,7 @@ public class TipOfMyTounge implements ActionListener{
     JButton hardButton;
 
     ArrayList<String> wordList = getWordList(1);
+    int[] flags;
     String targetWord;
     int count = 0;
 
@@ -69,9 +70,10 @@ public class TipOfMyTounge implements ActionListener{
         
 
         textField = new JTextField();
-        textField.setSize(220, 50);
+        textField.setSize(230, 50);
         textField.setLocation(x, y);
-        x += 225;
+        textField.addActionListener(this);
+        x += 235;
 
         enterButton = new JButton();
         enterButton.setText("Enter");
@@ -170,6 +172,7 @@ public class TipOfMyTounge implements ActionListener{
             cardLayout.show(panel,"1");
             int randomIndex = (int)(Math.random()*wordList.size());
             targetWord = wordList.get(randomIndex);
+            //System.out.println("[DEBUG]target word: " + targetWord);
         }
         
         if(e.getSource() == quitButton){
@@ -185,10 +188,9 @@ public class TipOfMyTounge implements ActionListener{
             }
         }
 
-        if(e.getSource() == enterButton){
+        if(e.getSource() == enterButton || e.getSource() == textField){
             String userWord = textField.getText();
             //TODO: check for real words
-            //TODO: color boxes according to whether the word is in the right place or exists
 
             if(userWord.equalsIgnoreCase(targetWord)){
                 textField.setEditable(false);
@@ -202,9 +204,19 @@ public class TipOfMyTounge implements ActionListener{
             }
 
             if(userWord.length() == targetWord.length()){
-                for(int i = 0; i < userWord.length(); i++)
+                flags = getFlags(userWord, targetWord);
+                for(int i = 0; i < userWord.length(); i++){
                     text[count][i].setText("" + userWord.toUpperCase().charAt(i));
-                    count++;
+                    switch(flags[i]){
+                        case 1:
+                            text[count][i].setBackground(Color.green);
+                            break;
+                        case 2:
+                            text[count][i].setBackground(Color.yellow);
+                            break;
+                    }
+                }
+                count++;
             }
             
             if(count == targetWord.length()){
@@ -285,5 +297,48 @@ public class TipOfMyTounge implements ActionListener{
             e.printStackTrace();
         }
         return WordList;
+    }
+
+    static int[] getFlags(String userWord, String targetWord){
+        // 0 = null
+        // 1 = letter at index is correct
+        // 2 = letter at index existes in target word but not at this index
+        // 3 = letter at index does not exist in target word
+        int[] flags = new int[targetWord.length()];
+        char[] targetWordArray = targetWord.toCharArray();
+
+        for(int i = 0; i < targetWord.length(); i++){
+            if(userWord.charAt(i) == targetWordArray[i]){
+                flags[i] = 1;
+                targetWordArray[i] = '.';
+            }
+        }
+        
+        //System.out.println("[DEBUG]");
+        //System.out.println(targetWordArray);
+        //for(int f: flags)
+        //    System.out.print(f);
+        //System.out.println();
+
+        for(int i = 0; i < targetWord.length(); i++){
+            int j;
+            for(j = 0; j < targetWord.length(); j++){
+                if(flags[i] != 1  && userWord.charAt(i) == targetWordArray[j]){
+                    flags[i] = 2;
+                    targetWordArray[j] = '.';
+                    break;
+                }
+            }
+            if(flags[i] != 1 && flags[i] != 2 && j == targetWord.length())
+                flags[i] = 3;
+        }
+
+        //System.out.println("[DEBUG]");
+        //System.out.println(targetWordArray);
+        //for(int f: flags)
+        //    System.out.print(f);
+        //System.out.println();
+
+        return flags;
     }
 }
