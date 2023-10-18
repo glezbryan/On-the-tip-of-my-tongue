@@ -556,10 +556,43 @@ public class TipOfMyTongue implements ActionListener{
     static String getInstructions(){
         String instructions = "";
 
-        instructions += "\t Instructions...\n";
-        instructions += "\t More Instructions...\n";
-        instructions += "\t Even more Instructions...\n";
-        instructions += "\t Why not more Instructions...\n";
+        instructions += " Main Menu:\n";
+        instructions += "  - The 'New Word?' Button will start a new game\n";
+        instructions += "  - Selecting a difficutly will change the amount of letter int the word you're guessing\n";
+        instructions += "    and the amount of guesses you get in each game.\n";
+        instructions += "          - Easy: Five letters and five guesses\n";
+        instructions += "          - Medium: Six letters and six guesses\n";
+        instructions += "          - Hard: Seven letters and seven guesses\n";
+        instructions += "   - Medium is the default difficulty at start up.\n";
+        instructions += " The Game:\n";
+        instructions += "  - New word generates a random word depending on the difficulty and your\n";
+        instructions += "    goal is to guess the random word\n";
+        instructions += "  - To make a guess, enter a word into the text box at the bottom of the\n";
+        instructions += "    window and hit 'Enter'\n";
+        instructions += "  - The letters in the word entered will be displayed in the above boxes and be colored\n";
+        instructions += "    accordingly to provide feedback to help guess the word\n";
+        instructions += "          - Green: The letter at in this spot is correct.\n";
+        instructions += "          - Yellow: The letter at this spot does exist in the word but not here. \n";
+        instructions += "          - Duplicate letters will not be highlighted. Ex: if the random word is 'Party' and \n";
+        instructions += "            and you enters 'Happy', only one of the 'p's will turn yellow but not both  \n";
+        instructions += "            becasue 'Party' only has one 'p'\n";
+        instructions += "  - If the word entered matches the randomly generated word, the all the letters will\n";
+        instructions += "    turn green, you streak will increase by one. You will then be left with the option to\n";
+        instructions += "    quit, returning to main menu, or get a new word at the same difficulty\n";
+        instructions += "  - If you run out of guesses, The randomly generated word will appear in the text box\n";
+        instructions += "    and the streak will reset to zero. Again, you will be left with only the option to\n";
+        instructions += "    quit to the main menu or start a new game.\n";
+        instructions += "  - If a word is enter that does not have the same number of letters as the randomly\n";
+        instructions += "  - generated word, you will get an error and a guess will not be taken up.\n";
+        instructions += "  - The randomly generated word comes from a finite list. To avoid non words, if the\n";
+        instructions += "    entered word is not on the word list, you will get an error and the it will\n";
+        instructions += "    not count as a guess\n";
+        instructions += "          - This does not imply that your word is not real! It's just not on the list.\n";
+        instructions += "          - HINT: On medium, the words list is vast so you can get very obscure words\n";
+        instructions += "          - HINT: On hard, the words list is limited and is mostly root words. There are not \n";
+        instructions += "                  a lot of words with prefixes or suffixes such as '-ed' or '-s'. This is\n";
+        instructions += "                  not a hard rule, there are exceptions.\n";
+
 
         return instructions;
     }
