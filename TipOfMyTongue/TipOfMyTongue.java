@@ -9,7 +9,6 @@ import java.util.*;
 
 public class TipOfMyTongue implements ActionListener{
     //TODO: Have a better way to display streaks?? maybe?
-    //TODO: Add an instructions text
     //TODO: Find a better 6 and or 7 letter word list
     //      6 letter word list has too many words, some of whcih aren't real
     //      7 letter word list has too little words, some common 7 letter words are not on the list
@@ -558,7 +557,7 @@ public class TipOfMyTongue implements ActionListener{
 
         instructions += " Main Menu:\n";
         instructions += "  - The 'New Word?' Button will start a new game\n";
-        instructions += "  - Selecting a difficutly will change the amount of letter int the word you're guessing\n";
+        instructions += "  - Selecting a difficutly will change the amount of letters in the word you're guessing\n";
         instructions += "    and the amount of guesses you get in each game.\n";
         instructions += "          - Easy: Five letters and five guesses\n";
         instructions += "          - Medium: Six letters and six guesses\n";
@@ -574,25 +573,24 @@ public class TipOfMyTongue implements ActionListener{
         instructions += "          - Green: The letter at in this spot is correct.\n";
         instructions += "          - Yellow: The letter at this spot does exist in the word but not here. \n";
         instructions += "          - Duplicate letters will not be highlighted. Ex: if the random word is 'Party' and \n";
-        instructions += "            and you enters 'Happy', only one of the 'p's will turn yellow but not both  \n";
-        instructions += "            becasue 'Party' only has one 'p'\n";
-        instructions += "  - If the word entered matches the randomly generated word, the all the letters will\n";
-        instructions += "    turn green, you streak will increase by one. You will then be left with the option to\n";
-        instructions += "    quit, returning to main menu, or get a new word at the same difficulty\n";
+        instructions += "            you enter 'Happy', only one of the 'p's will turn yellow but not both  \n";
+        instructions += "            because 'Party' only has one 'p'\n";
+        instructions += "  - If the word entered matches the randomly generated word, then all the letters will\n";
+        instructions += "    turn green and your streak will increase by one. You will then be left with the option to\n";
+        instructions += "    quit, return to main menu, or get a new word at the same difficulty\n";
         instructions += "  - If you run out of guesses, The randomly generated word will appear in the text box\n";
         instructions += "    and the streak will reset to zero. Again, you will be left with only the option to\n";
         instructions += "    quit to the main menu or start a new game.\n";
-        instructions += "  - If a word is enter that does not have the same number of letters as the randomly\n";
-        instructions += "  - generated word, you will get an error and a guess will not be taken up.\n";
+        instructions += "  - If a word is entered that does not have the same number of letters as the randomly\n";
+        instructions += "    generated word, you will get an error and a guess will not be taken up.\n";
         instructions += "  - The randomly generated word comes from a finite list. To avoid non words, if the\n";
-        instructions += "    entered word is not on the word list, you will get an error and the it will\n";
+        instructions += "    entered word is not on the word list, you will get an error and it will\n";
         instructions += "    not count as a guess\n";
         instructions += "          - This does not imply that your word is not real! It's just not on the list.\n";
         instructions += "          - HINT: On medium, the words list is vast so you can get very obscure words\n";
         instructions += "          - HINT: On hard, the words list is limited and is mostly root words. There are not \n";
         instructions += "                  a lot of words with prefixes or suffixes such as '-ed' or '-s'. This is\n";
         instructions += "                  not a hard rule, there are exceptions.\n";
-
 
         return instructions;
     }
