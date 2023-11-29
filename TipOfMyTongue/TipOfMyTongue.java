@@ -8,13 +8,6 @@ import java.awt.*;
 import java.util.*;
 
 public class TipOfMyTongue implements ActionListener{
-    //TODO: Have a better way to display streaks?? maybe?
-    //TODO: Find a better 6 and or 7 letter word list
-    //      6 letter word list has too many words, some of whcih aren't real
-    //      7 letter word list has too little words, some common 7 letter words are not on the list
-    //TODO: Hints? How? Is there a cost?
-    //TODO: possible time factor
-    //TODO: Add a debugging way of debating words
     
     JFrame frame;
     JPanel panel;
@@ -58,12 +51,14 @@ public class TipOfMyTongue implements ActionListener{
     TipOfMyTongue() {
         frame = new JFrame();
 
+        //Card layout is used to change between panels
         cardLayout = new CardLayout();
         panel = new JPanel();
         panel.setLayout(cardLayout);
 
         //Game Panel Components
         int x = 85, y = 35;
+        //Setting text matrix, setting row and column 7 to hidden so medium is the defualt difficulty
         for(int row = 0; row < 7; row++){
             for(int column = 0; column < 7; column++){
                 
@@ -98,7 +93,7 @@ public class TipOfMyTongue implements ActionListener{
         enterButton.setFocusable(false);
         enterButton.setSize(70, 50);
         enterButton.setLocation(x, y);
-        enterButton.addActionListener(this);
+        enterButton.addActionListener(this); //Listens for the 'Enter' key
 
         playAgainButton = new JButton();
         playAgainButton.setText("New");
@@ -227,7 +222,6 @@ public class TipOfMyTongue implements ActionListener{
         intstuctionTitle.setSize(400, 50);
         intstuctionTitle.setLocation(50, 50);
 
-
         instructionTextArea = new JTextArea();
         instructionTextArea.setText(getInstructions());
         instructionTextArea.setForeground(Color.BLACK);
@@ -262,16 +256,19 @@ public class TipOfMyTongue implements ActionListener{
         frame.setIconImage(icon.getImage());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("On The Tip Of My Tongue");
-        cardLayout.show(panel, "2");
+        cardLayout.show(panel, "2"); //defualt to main menu
         frame.add(panel);
         frame.setSize(500,500);
         frame.setResizable(false);
         frame.setVisible(true);
     }
+
+
     public static void main(String[] args){
         new TipOfMyTongue();
     }
 
+    
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == newWordButton){
             cardLayout.show(panel,"1"); //switch to game panel
@@ -280,10 +277,10 @@ public class TipOfMyTongue implements ActionListener{
             //System.out.println("[DEBUG]target word: " + targetWord);
         }
         if(e.getSource() == instructionButton)
-            cardLayout.show(panel, "3");
+            cardLayout.show(panel, "3"); //switch to instructions panel
 
         if(e.getSource() == backButton)
-            cardLayout.show(panel, "2");
+            cardLayout.show(panel, "2"); //switch to main menu panel
         
         if(e.getSource() == quitButton){
             turn = 0;
@@ -376,9 +373,6 @@ public class TipOfMyTongue implements ActionListener{
                     case 2:
                         text[turn][i].setBackground(Color.yellow);
                         break;
-                    //case 3:
-                    //    text[turn][i].setBackground(Color.red);
-                    //    break;
                 }
             }
             textField.setText(null);
@@ -409,6 +403,7 @@ public class TipOfMyTongue implements ActionListener{
         }
         
         if(e.getSource() == playAgainButton){
+            //clear board for a new game
             turn = 0;
             textField.setText(null);
             textField.setEditable(true);
